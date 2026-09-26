@@ -123,27 +123,20 @@ const createCatalogCard = (item, type) => {
   if (item.duration) caption.append(duration);
   card.append(image, caption);
 
-  const goToPlayer = async () => {
+  const goToPlayer = () => {
     if (card.getAttribute('aria-busy') === 'true') return;
     card.setAttribute('aria-busy', 'true');
 
-    try {
-      let source = item.embedUrl;
-      if (type === 'movie') {
-        const response = await fetch(`${movieApiUrl}/${encodeURIComponent(item.id)}/streams`);
-        if (!response.ok) throw new Error('Não foi possível localizar um player.');
-        const streams = await response.json();
-        source = streams[0]?.url;
-        if (!source) throw new Error('Nenhum player disponível para este filme.');
-      }
-
-      const targetUrl = `player.html?type=${type}&title=${encodeURIComponent(item.title)}&source=${encodeURIComponent(source)}`;
-      window.location.href = targetUrl;
-    } catch (error) {
-      window.alert(error.message || 'Não foi possível abrir este filme.');
-    } finally {
-      card.removeAttribute('aria-busy');
+    const params = new URLSearchParams({
+      type,
+      title: item.title
+    });
+    if (type === 'movie') {
+      params.set('id', item.id);
+    } else if (item.embedUrl) {
+      params.set('source', item.embedUrl);
     }
+    window.location.href = `player.html?${params.toString()}`;
   };
 
   card.addEventListener('click', goToPlayer);

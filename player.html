@@ -87,14 +87,37 @@
       const params = new URLSearchParams(window.location.search);
       const type = params.get('type') || 'movie';
       const title = params.get('title') || 'Assistir agora';
-      const embedUrl = params.get('source') || 'https://myembed.biz/filme/tt22084616';
+      const movieId = params.get('id');
+      const embedUrl = params.get('source');
 
       const titleElement = document.getElementById('player-title');
       const iframe = document.getElementById('player-iframe');
 
-      titleElement.textContent = title;
-      iframe.title = type === 'series' ? 'Player da série' : 'Player do filme';
-      iframe.src = embedUrl;
+      const showError = (message) => {
+        titleElement.textContent = message;
+        iframe.remove();
+      };
+
+      const loadPlayer = async () => {
+        try {
+          let source = embedUrl;
+          if (type === 'movie') {
+            if (!movieId) throw new Error('Filme não informado.');
+            const response = await fetch(`http://localhost:8080/api/movies/${encodeURIComponent(movieId)}/streams`);
+            if (!response.ok) throw new Error('Não foi possível localizar um player.');
+            const streams = await response.json();
+            source = streams[0]?.url;
+          }
+          if (!source) throw new Error('Nenhum player disponível para este título.');
+          titleElement.textContent = title;
+          iframe.title = type === 'series' ? 'Player da série' : 'Player do filme';
+          iframe.src = source;
+        } catch (error) {
+          showError(error.message || 'Não foi possível abrir este título.');
+        }
+      };
+
+      loadPlayer();
     </script>
   </body>
 </html>
