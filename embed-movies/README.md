@@ -467,7 +467,7 @@ No PowerShell, configure a chave e inicie o servidor a partir da pasta do worksp
 
 ```powershell
 $env:TMDB_API_KEY = "sua-chave-do-tmdb"
-mvn -f embed-movies/pom.xml -Dexec.mainClass=com.github.jonascaetanosz.embedmovies.CatalogServer compile org.codehaus.mojo:exec-maven-plugin:3.5.0:java
+mvn -f embed-movies/pom.xml "-Dexec.mainClass=com.github.jonascaetanosz.embedmovies.CatalogServer" compile org.codehaus.mojo:exec-maven-plugin:3.5.0:java
 ```
 
 Depois, abra `index.html` ou sirva os arquivos do site com uma extensão como Live Server. A lista usa o endpoint de tendências da biblioteca (não é um catálogo completo de todos os filmes existentes), e os cards além da primeira página podem ser percorridos pelo carrossel.
