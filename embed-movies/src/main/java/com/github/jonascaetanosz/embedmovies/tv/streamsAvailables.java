@@ -26,6 +26,8 @@ import java.io.IOException;
 
 import java.net.URI;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 public class streamsAvailables {
     
@@ -45,27 +47,32 @@ public class streamsAvailables {
             for (int i = 0; i < 5; i++){
                 try {
                     response = client.newCall(request).execute();
-                    break;
+                    if (response.isSuccessful() && response.body() != null) break;
+                    response.close();
+                    response = null;
                 } catch (Exception e) {
                     System.out.println("ERRO AO PROCESSAR PLAYERS SERIES: " + e.getMessage()) ;
                 }
             }
-            String responseContent = response.body().string();
+            if (response == null) throw new IOException("O provedor de players não respondeu.");
+            String responseContent;
+            Response responseToRead = response;
+            try (responseToRead) {
+                responseContent = responseToRead.body().string();
+            }
             List<Stream> streams = new ArrayList<>();
             Document document = Jsoup.parse( responseContent );
             String episodeTitle = document.select(".info-text").text();
 
-            Elements buttonsPlayer = document.select("button.hostDub");
-
-            if (buttonsPlayer.size() == 0){
-                buttonsPlayer = document.select("button.hostLeg");
-            }
+            Elements buttonsPlayer = document.select(".player-option[data-embed]");
             
             for (Element button : buttonsPlayer){
-                String streamName = button.selectFirst(".player-name").text();
-                String streamDescription = button.selectFirst(".player-description").text();
-                String onclick = button.attr("onclick");
-                String streamUrl = extractUrlFromOnClick(onclick);
+                Element nameElement = button.selectFirst(".player-name");
+                Element descriptionElement = button.selectFirst(".player-details");
+                String streamName = nameElement == null ? "Player" : nameElement.text();
+                String streamDescription = descriptionElement == null ? "" : descriptionElement.text();
+                String streamUrl = decodeEmbedUrl(button.attr("data-embed"));
+                if (streamUrl.isBlank()) continue;
                 Stream stream = new Stream(episodeTitle, streamDescription, streamName, streamUrl);
                 streams.add(stream);
                 
@@ -79,13 +86,12 @@ public class streamsAvailables {
     }
     return null;
 }
-    private static String extractUrlFromOnClick(String onclick) {
-        int start = onclick.indexOf("\"") + 1;
-        int end = onclick.indexOf("\"", start);
-        if (start >= 0 && end > start) {
-            return onclick.substring(start, end);
+    private static String decodeEmbedUrl(String encodedUrl) {
+        try {
+            return new String(Base64.getDecoder().decode(encodedUrl), StandardCharsets.UTF_8);
+        } catch (IllegalArgumentException exception) {
+            return "";
         }
-        return "URL não encontrada";
     }
 }
 
