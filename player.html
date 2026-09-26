@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Player de filme do Rogério." />
+    <title>Rogério | Player</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        background: #0d0e10;
+        color: #f5f4f0;
+        font-family: "DM Sans", Arial, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      body {
+        align-items: center;
+        background: #0d0e10;
+        display: flex;
+        justify-content: center;
+        padding: 24px;
+      }
+
+      main {
+        width: min(1440px, 100%);
+      }
+
+      h1 {
+        font-size: clamp(24px, 4vw, 42px);
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        margin: 0 0 18px;
+      }
+
+      .player-frame {
+        background: #000;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      iframe {
+        border: 0;
+        display: block;
+        min-height: 420px;
+        width: 100%;
+      }
+
+      @media (max-width: 600px) {
+        body {
+          padding: 14px;
+        }
+
+        iframe {
+          min-height: 260px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1 id="player-title">Assistir agora</h1>
+      <div class="player-frame">
+        <iframe
+          id="player-iframe"
+          src="https://myembed.biz/filme/tt22084616"
+          title="Player do filme"
+          height="70vh"
+          scrolling="no"
+          allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </main>
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const type = params.get('type') || 'movie';
+      const title = params.get('title') || 'Assistir agora';
+      const embedUrl = params.get('source') || 'https://myembed.biz/filme/tt22084616';
+
+      const titleElement = document.getElementById('player-title');
+      const iframe = document.getElementById('player-iframe');
+
+      titleElement.textContent = title;
+      iframe.title = type === 'series' ? 'Player da série' : 'Player do filme';
+      iframe.src = embedUrl;
+    </script>
+  </body>
+</html>

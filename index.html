@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Rogério, seu catálogo de filmes para assistir do seu jeito." />
+    <title>Rogério | Assista do seu jeito</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#inicio" aria-label="Rogério início">ROGÉRIO</a>
+      <nav class="main-nav" aria-label="Navegacao principal">
+        <a class="active" href="#inicio">Inicio</a>
+        <a href="#catalogo">Catálogo</a>
+        <a href="#series">Séries</a>
+      </nav>
+      <div class="top-actions">
+        <button class="icon-button theme-toggle" type="button" data-theme-toggle aria-label="Ativar modo claro" aria-pressed="false" title="Ativar modo claro">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+        </button>
+        <button class="icon-button" type="button" aria-label="Pesquisar" title="Pesquisar">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 5 5"></path></svg>
+        </button>
+        <button class="icon-button notification" type="button" aria-label="Notificacoes" title="Notificacoes">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"></path></svg>
+          <span>3</span>
+        </button>
+        <button class="profile-button" type="button" aria-label="Abrir perfil">
+          <span class="avatar">D</span>
+          <span class="profile-name">diego</span>
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"></path></svg>
+        </button>
+      </div>
+    </header>
+
+    <main id="inicio">
+      <section class="content-section catalog-section" id="catalogo" aria-labelledby="catalog-title">
+        <div class="section-heading"><div><p class="section-kicker">Em alta hoje</p><h2 id="catalog-title">Filmes</h2></div><span class="catalog-count movie-count">0 títulos</span></div>
+        <div class="catalog-carousel" data-carousel>
+          <button class="carousel-button previous" type="button" data-carousel-direction="previous" aria-label="Colunas anteriores">←</button>
+          <div class="carousel-viewport"><div class="movie-grid movie-grid-list" aria-live="polite"></div></div>
+          <button class="carousel-button next" type="button" data-carousel-direction="next" aria-label="Próximas colunas">→</button>
+        </div>
+      </section>
+
+      <section class="content-section catalog-section" id="series" aria-labelledby="series-title">
+        <div class="section-heading"><div><p class="section-kicker">Temporadas para maratonar</p><h2 id="series-title">Séries</h2></div><span class="catalog-count series-count">0 títulos</span></div>
+        <div class="catalog-carousel" data-carousel>
+          <button class="carousel-button previous" type="button" data-carousel-direction="previous" aria-label="Colunas anteriores">←</button>
+          <div class="carousel-viewport"><div class="movie-grid series-grid"></div></div>
+          <button class="carousel-button next" type="button" data-carousel-direction="next" aria-label="Próximas colunas">→</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer"><span class="brand small-brand">ROGÉRIO</span><span>Seu catálogo para assistir do seu jeito.</span><span>Privacidade · Termos · Ajuda</span></footer>
+  </body>
+</html>
